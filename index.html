@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Player-Music</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+  <main>
+    <div class="container-player">
+      <div class="image">
+        <img src="assets/images/OJO_LAND.jpg" alt="Portada" />
+      </div>
+      <div class="name">
+        <h2>Lorem ipsum</h2>
+        <p>Lorem a cupiditate!</p>
+      </div>
+
+      <!-- Audio único -->
+      <audio id="audio-player" src="assets/music/04 - Paninaro (7 version).mp3"></audio>   
+
+      <!-- Barra de progreso -->
+      <div class="progress-bar">
+        <div class="time">
+          <div class="time-1"><p id="current-time">00:00</p></div>
+          <div class="time-2"><p id="duration">00:00</p></div>
+        </div>
+        <progress id="progress" value="0" max="100"></progress>
+      </div>
+
+      <!-- Controles -->
+      <div class="play-music">
+        <div class="button" id="prev"><i class="fa-solid fa-backward"></i></div>
+        <div class="button play" id="play-pause">
+          <i class="fa-solid fa-play" id="play-icon"></i>
+        </div>
+        <div class="button" id="next"><i class="fa-solid fa-forward"></i></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script>
+    const songs = [
+    {
+    title: "Time",
+    artist: "The Alan Parsons Project",
+    src: "assets/music/The Alan Parsons Project - Time (Official Audio).mp3",
+    cover: "assets/images/OJO_LAND.jpg"
+  },
+  {
+    title: "Paninaro",
+    artist: "Pet Shop Boys",
+    src: "assets/music/04 - Paninaro (7 version).mp3",
+    cover: "assets/images/cam.jpg"
+  },
+  {
+    title: "Comfortably Numb",
+    artist: "Pink Floyd",
+    src: "assets/music/Pink Floyd Comfortably Numb.mp3",
+    cover: "assets/images/DSCF0804.JPG"
+  }
+];
+
+    let currentSongIndex = 0;
+    const audio = document.getElementById('audio-player');
+    const progress = document.getElementById('progress');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationEl = document.getElementById('duration');
+    const playPauseBtn = document.getElementById('play-pause');
+    const playIcon = document.getElementById('play-icon');
+
+    // Elementos para mostrar información
+const titleEl = document.querySelector(".name h2");
+const artistEl = document.querySelector(".name p");
+const coverImg = document.querySelector(".image img");
+
+// Cargar canción
+function loadSong(index) {
+  const song = songs[index];
+  audio.src = song.src;
+  titleEl.textContent = song.title;
+  artistEl.textContent = song.artist;
+  coverImg.src = song.cover;
+  audio.load();
+}
+
+    // Formato mm:ss
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60);
+      return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    // Actualizar progreso
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) {
+        progress.value = (audio.currentTime / audio.duration) * 100;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+      }
+    });
+
+    // Mostrar duración
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+    });
+
+     // Cargar la primera canción al inicio
+
+    window.addEventListener("DOMContentLoaded", () => {
+  loadSong(currentSongIndex);
+});
+
+    // Play/Pause
+    playPauseBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playIcon.classList.replace('fa-play', 'fa-pause');
+      } else {
+        audio.pause();
+        playIcon.classList.replace('fa-pause', 'fa-play');
+      }
+    });
+
+    // Cambiar posición con clic
+    progress.addEventListener('click', (e) => {
+      const rect = progress.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const percent = clickX / width;
+      audio.currentTime = percent * audio.duration;
+    });
+
+    document.getElementById("next").addEventListener("click", () => {
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  loadSong(currentSongIndex);
+  audio.play();
+  playIcon.classList.replace("fa-play", "fa-pause");
+});
+
+document.getElementById("prev").addEventListener("click", () => {
+  currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+  loadSong(currentSongIndex);
+  audio.play();
+  playIcon.classList.replace("fa-play", "fa-pause");
+});
+
+audio.addEventListener("ended", () => {
+  currentSongIndex = (currentSongIndex + 1) % songs.length;
+  loadSong(currentSongIndex);
+  audio.play();
+  playIcon.classList.replace("fa-play", "fa-pause");
+});
+
+
+
+
+  </script>
+</body>
+</html>
