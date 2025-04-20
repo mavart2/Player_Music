@@ -1,9 +1,9 @@
 ## Hi there 👋
 
 <h1 align="center">Hola! este es un 👋, Player Music</h1>
-<h3 align="center">Desarrollado FullStack, usando HTML5 - CSS3 -  JavaScript </h3>
+<h3 align="center">Desarrollo FullStack, usando HTML5 - CSS3 -  JavaScript </h3>
 
-- 📫 How to reach me **gmproyect@gmail.com**
+- 👨‍💻 All of my projects are available at [https://mavart2.github.io/portafolio/](https://mavart2.github.io/portafolio/)
 
 <h3 align="left">Connect with me: mavart08@gmail.com</h3>
 <p align="left">
